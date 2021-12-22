@@ -1,4 +1,3 @@
-'use strict';
 // const atTheOldToad = {
 //   potions: [
 //     { name: "Speed potion", price: 460 },
