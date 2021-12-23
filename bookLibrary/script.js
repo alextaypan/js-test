@@ -111,10 +111,12 @@ const title = document.createElement('h1');
 title.classList.add('title');
 title.textContent = 'Books';
 const listBooks = document.createElement('ul');
-const btnAdd = document.createElement('button');
+const btn = document.createElement('button');
 btnAdd.textContent = 'Add';
 btnAdd.classList.add('button');
 div1.append(title, listBooks, btnAdd);
+const btnAdd = document.querySelector('.button');
+btnAdd.addEventListener('click', addBook);
 const listBooksLink = document.querySelector('ul');
 function renderList() {
   const bookMarkApp = books
@@ -129,7 +131,8 @@ function renderList() {
   listBooksLink.insertAdjacentHTML('afterbegin', bookMarkApp);
   document.querySelectorAll('.book-title').forEach(p => p.addEventListener('click', renderPreview));
   document.querySelectorAll('.del').forEach(btn => btn.addEventListener('click', renderBtnDel));
-  document.querySelectorAll('.edit').forEach(btn => btn.addEventListener('click', renderBtnEdit));
+
+  // document.querySelectorAll('.edit').forEach(btn => btn.addEventListener('click', renderBtnEdit));
 }
 renderList();
 function renderPreview(event) {
@@ -155,4 +158,42 @@ function renderBtnDel(e) {
   books.splice(index, 1);
   listBooksLink.innerHTML = '';
   renderList();
+}
+
+function addBook(e) {
+  const newBook = { id: `${Date.now()}`, title: '', author: '', img: '', plot: '' };
+  div2.insertAdjacentHTML('afterbegin', renderFormMarkup());
+  formFunction(newBook);
+  const btnSubmit = document.querySelector('.submit');
+  btnSubmit.addEventListener('click', saveChanges);
+  function saveChanges(e) {
+    if (newBook.title && newBook.author && newBook.img && newBook.plot) {
+      books.push(newBook);
+    }
+  }
+}
+
+function renderFormMarkup() {
+  return `<form action="">
+      <label for="">Name
+        <input type="text" name="title">
+      </label>
+      <label for="">Author
+        <input type="text" name="author">
+      </label>
+      <label for="">Image
+        <input type="text" name="img">
+      </label>
+      <label for="">Plot
+        <input type="text" name="plot">
+        <button type="button" class="submit">Submit</button>
+      </label>
+    </form>`;
+}
+
+function formFunction(book) {
+  document.querySelectorAll('input').forEach(el => el.addEventListener('change', fillObject));
+  function fillObject(e) {
+    book[e.target.name] = e.target.value;
+  }
 }
